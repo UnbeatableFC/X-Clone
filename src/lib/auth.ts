@@ -18,13 +18,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       profile: async (profile) => {
         console.log(profile, "profile");
         const baseUsername = generateBaseUsername(profile.name, profile.email);
-        const unqiueUsername = await ensureUniqueUsername(baseUsername);
+        const uniqueUsername = await ensureUniqueUsername(baseUsername);
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           profileImage: profile.picture,
-          username: unqiueUsername,
+          username: uniqueUsername,
         };
       },
     }),

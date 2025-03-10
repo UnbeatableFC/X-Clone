@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,8 +13,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { BASE_URL } from "@/lib/base-url";
+import { useToast } from "@/hooks/use-toast";
 
 const RegisterFormModal = () => {
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const formSchema = z.object({
     name: z.string().min(1, { message: "Name Required" }),
@@ -44,7 +49,30 @@ const RegisterFormModal = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setIsLoading(!isLoading),
+        await axios.post(`${BASE_URL}/api/register`, {
+          email: values.email,
+          password: values.password,
+          name: values.name,
+          username: values.username,
+          dateOfBirth: values.dateOfBirth,
+        });
+
+      form.reset();
+
+      toast({
+        title: " Success",
+        description: "Registered Successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error",
+        description: "Registration Failed",
+        variant: "destructive",
+      });
+    }
   };
   const handleClose = () => {
     setIsOpen(!isOpen);

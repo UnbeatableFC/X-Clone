@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +11,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
+import { useToast } from "@/hooks/use-toast";
 
 const LoginForm = () => {
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
     email: z
       .string()
@@ -30,7 +33,27 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setIsLoading(!isLoading);
+      await doCredentialLogin({
+        email: values.email,
+        password: values.password,
+      });
+      toast({
+        title: "Success",
+        description: "Login successful",
+        variant: "default",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error",
+        description: "Failed to Login",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <FormProvider {...form}>
@@ -47,7 +70,7 @@ const LoginForm = () => {
               <FormControl>
                 <Input
                   placeholder="Email"
-                  disabled={false}
+                  disabled={isLoading}
                   className="form--input focus:border-0 dark:border-[rgba(255,255,255,.5)]"
                   {...field}
                 />
@@ -64,7 +87,7 @@ const LoginForm = () => {
                 <Input
                   type="password"
                   placeholder="Password"
-                  disabled={false}
+                  disabled={isLoading}
                   className="form--input focus:border-0 dark:border-[rgba(255,255,255,.5)]"
                   {...field}
                 />
@@ -79,9 +102,9 @@ const LoginForm = () => {
           size="brandSm"
           type="submit"
           className="!mt-5 gap-1"
-          disabled={false}
+          disabled={isLoading}
         >
-          {/* <Spinner size='default' /> */}
+          {isLoading && <Spinner size="default" />}
           Sign In
         </Button>
       </form>
@@ -90,3 +113,9 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+function doCredentialLogin(arg0: {
+  email: string;
+  password: string;
+}) {
+  throw new Error("Function not implemented.");
+}
