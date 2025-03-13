@@ -1,9 +1,9 @@
-export const generateBaseUsername = (name:string ,email:string) => {
+export const generateBaseUsername = (name:string ,email?:string) => {
     let baseUsername = ''
     if (name) {
-        baseUsername = name?.split('')?.[0]?.toLowerCase()
+        baseUsername = name?.split(' ')?.[0]?.toLowerCase()
     }else if(email) {
-        baseUsername = email?.split('')?.[0]?.toLowerCase()
+        baseUsername = email?.split(' ')?.[0]?.toLowerCase()
     } else {
         baseUsername = `user`
     }

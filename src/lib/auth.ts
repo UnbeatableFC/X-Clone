@@ -17,8 +17,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
       profile: async (profile) => {
         console.log(profile, "profile");
-        const baseUsername = generateBaseUsername(profile.name, profile.email);
-        const uniqueUsername = await ensureUniqueUsername(baseUsername);
+        const baseUsername = generateBaseUsername(
+          profile.name,
+          profile.email
+        );
+        const uniqueUsername = await ensureUniqueUsername(
+          baseUsername
+        );
         return {
           id: profile.sub,
           name: profile.name,
@@ -50,7 +55,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("User not found");
           }
 
-          const isMatch = await bcrypt.compare(password, user.hashedPassword);
+          const isMatch = await bcrypt.compare(
+            password,
+            user.hashedPassword
+          );
 
           if (!isMatch) {
             throw new Error("Email/Password is wrong");

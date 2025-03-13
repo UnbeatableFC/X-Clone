@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { BASE_URL } from "@/lib/base-url";
 import { useToast } from "@/hooks/use-toast";
+import Spinner from "@/components/spinner/index";
+import CheckUsername from "@/components/check-username";
 
 const RegisterFormModal = () => {
   const { toast } = useToast();
@@ -50,7 +52,7 @@ const RegisterFormModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setIsLoading(!isLoading),
+      setIsLoading(true),
         await axios.post(`${BASE_URL}/api/register`, {
           email: values.email,
           password: values.password,
@@ -65,6 +67,7 @@ const RegisterFormModal = () => {
         title: " Success",
         description: "Registered Successfully",
       });
+      handleClose();
     } catch (error) {
       console.log(error);
       toast({
@@ -72,10 +75,12 @@ const RegisterFormModal = () => {
         description: "Registration Failed",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleClose = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(false);
   };
   return (
     <Modal
@@ -131,7 +136,7 @@ const RegisterFormModal = () => {
                   <FormItem className="w-full">
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      {/* <CheckUsername /> */}
+                      <CheckUsername />
                     </FormControl>
                   </FormItem>
                 )}
@@ -179,9 +184,9 @@ const RegisterFormModal = () => {
                 size="brandSm"
                 type="submit"
                 className="!mt-5 gap-1"
-                disabled={false}
+                disabled={isLoading}
               >
-                {/* <Spinner size='default' /> */}
+                {isLoading && <Spinner size="default" />}
                 Create
               </Button>
             </form>
