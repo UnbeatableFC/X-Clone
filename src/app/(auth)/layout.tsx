@@ -8,7 +8,7 @@ async function AuthLayout({
   const session = await auth();
 
   if (session?.user) {
-    return redirect("/");
+    return redirect("/home");
   }
   return (
     <div className="h-screen w-full ">

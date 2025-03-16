@@ -6,13 +6,14 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log(body);
     const { name, email, username, password, dateOfBirth } =
       await signupSchema.parseAsync(body);
+
     const parsedDateOfBirth = new Date(dateOfBirth);
     const isUserEmailExist = await prisma.user.findUnique({
       where: { email },
     });
-
     if (isUserEmailExist) {
       throw new Error("Email already exists");
     }
@@ -33,28 +34,23 @@ export async function POST(request: Request) {
         username,
         dateOfBirth: parsedDateOfBirth,
         hashedPassword,
-        hasNotification: false, // or true, depending on your default value
       },
     });
-
     return NextResponse.json(
       {
         message: "Registration successful",
-        status: "successful",
+        status: "success",
       },
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       {
         message: "Registration failed",
         status: "error",
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
