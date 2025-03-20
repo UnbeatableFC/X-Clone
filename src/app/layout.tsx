@@ -3,6 +3,8 @@ import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
+import SessionProviders from "@/context/session-provider";
+import QueryProvider from "@/context/query-provider";
 
 const dmSans = Urbanist({ subsets: ["latin"] });
 
@@ -18,11 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(`bg-background`, dmSans.className)}
-      >
-        {children}
-        <Toaster />
+      <body className={cn(`bg-background`, dmSans.className)}>
+        <SessionProviders>
+          <QueryProvider>
+            {children}
+            <Toaster />
+          </QueryProvider>
+        </SessionProviders>
       </body>
     </html>
   );

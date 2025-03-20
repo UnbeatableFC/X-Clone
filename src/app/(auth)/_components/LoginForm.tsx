@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
 import { useToast } from "@/hooks/use-toast";
+import { doCredentialsLogin } from "@/app/actions/auth.action";
 
 const LoginForm = () => {
   const { toast } = useToast();
@@ -35,7 +36,7 @@ const LoginForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(!isLoading);
-      await doCredentialLogin({
+      await doCredentialsLogin({
         email: values.email,
         password: values.password,
       });
@@ -113,9 +114,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-function doCredentialLogin(arg0: {
-  email: string;
-  password: string;
-}) {
-  throw new Error("Function not implemented.");
-}
+

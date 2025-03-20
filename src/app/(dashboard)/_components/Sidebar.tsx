@@ -13,6 +13,15 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import SidebarItem from "./_common/SidebarItem";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Spinner from "@/components/spinner";
+import { doLogOut } from "@/app/actions/auth.action";
+import { useCurrentUserContext } from "@/context/currentUser-provider";
 
 interface MenuType {
   label: string;
@@ -23,6 +32,23 @@ interface MenuType {
 
 const Sidebar = () => {
   const router = useRouter();
+  const { data, isLoading, refetch } = useCurrentUserContext();
+  const fetchedUser: UserType = data?.currentUser ?? ({} as UserType);
+  const username = fetchedUser?.username ?? "";
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner size="icon" />
+      </div>
+    );
+  }
+
+  console.log(
+    fetchedUser?.hasNotification,
+    "fetchedUser?.hasNotification"
+  );
+
   const MENU_LIST: MenuType[] = [
     {
       label: "Home",
@@ -46,7 +72,7 @@ const Sidebar = () => {
     },
     {
       label: "Profile",
-      href: "/Wisdom",
+      href: `/${username}`,
       icon: User,
     },
     {
@@ -55,6 +81,7 @@ const Sidebar = () => {
       icon: Settings,
     },
   ];
+
   return (
     <aside className="w-full fixed h-screen pr-0 lg:pr-6 overflow-y-auto overflow-x-hidden">
       <div className="flex flex-col h-full items-start ">
@@ -85,14 +112,53 @@ const Sidebar = () => {
                 <Button
                   variant="brandPrimary"
                   size="icon"
-                  className="mt-0 lg:hidden rounded-full ml-1 h-14 w-14 p-4 flex items-center justify-center hover:bg-opacity-80 transition cursor-pointer"
+                  className="mt-0 lg:hidden rounded-full ml-2 h-10 w-10 flex items-center justify-center hover:bg-opacity-80 transition cursor-pointer"
                 >
                   <Feather size={24} color="white " />
                 </Button>
-                <Button variant="brandPrimary"
-                  className="w-full hidden lg:block !pt-4 !py-2 !h-auto !text-white transition font-semibold text-[20px]">Post</Button>
+                <Button
+                  variant="brandPrimary"
+                  className="w-full hidden lg:block !pt-4 !py-2 !h-auto !text-white transition font-semibold text-[20px]"
+                >
+                  Post
+                </Button>
               </div>
             </div>
+          </div>
+          <div className="shrink flex items-center w-full justify-between">
+            {isLoading ? (
+              <Spinner size="lg" />
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="!outline-none">
+                  <SidebarItem
+                    isUser={true}
+                    userInfo={{
+                      username: fetchedUser?.username || "",
+                      fullname: fetchedUser?.name || "",
+                      profileImgUrl: fetchedUser?.profileImage || "",
+                    }}
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <form action={doLogOut}>
+                      <button
+                        type="submit"
+                        className="w-full flex flex-row items-center gap-2 
+                      px-4 text-base !cursor-pointer
+                      "
+                      >
+                        Log out{" "}
+                        <span className="block max-w-[120px] truncate ml-1">
+                          Wisdom Mpamugo
+                        </span>
+                      </button>
+                    </form>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>
