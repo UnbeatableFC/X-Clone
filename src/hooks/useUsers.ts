@@ -1,3 +1,4 @@
+'use client'
 import { BASE_URL } from "@/lib/base-url";
 import fetcher from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";

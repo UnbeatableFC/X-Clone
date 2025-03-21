@@ -1,3 +1,4 @@
+"use client";
 import Spinner from "@/components/spinner";
 import {
   Avatar,
@@ -13,7 +14,7 @@ const FollowList = () => {
   const users: UserType[] = data?.data ?? [];
 
   if (isLoading) {
-    <div className="bg-background dark:border dark:border-[rgb(47,51,54)] rounded-xl p-4">
+    <div className="bg-background dark:border dark:border-[rgb(47,51,54)] rounded-xl min-h-[150px] p-4">
       <div className="flex items-center justify-center">
         <Spinner size="icon" />
       </div>
@@ -33,13 +34,19 @@ const FollowList = () => {
         <ul role="list" className="flex flex-col gap-6 mt-4 pb-2">
           {users?.map((user) => (
             <li
-            key={user?.id}
+              key={user?.id}
               role="listitem"
               className="flex flex-row gap-4 cursor-pointer "
             >
-              <Link href={`/${user?.username}`} className="shrink-0 w-fit">
+              <Link
+                href={`/${user?.username}`}
+                className="shrink-0 w-fit"
+              >
                 <Avatar className="cursor-pointer hover:opacity-90">
-                  <AvatarImage src={`${user?.profileImage}`} className="object-cover" />
+                  <AvatarImage
+                    src={`${user?.profileImage}`}
+                    className="object-cover"
+                  />
                   <AvatarFallback className="font-bold text-[18px] ">
                     {user?.name?.[0]}
                   </AvatarFallback>
@@ -47,17 +54,21 @@ const FollowList = () => {
               </Link>
               <div className="flex flex-1 items-center justify-between">
                 <div className="flex flex-col">
-                  <Link href={`/${user?.username}`} className="hover:underline">
+                  <Link
+                    href={`/${user?.username}`}
+                    className="hover:underline"
+                  >
                     <div className="flex gap-1">
                       <h5 className="font-semibold text-[15.5px] transition">
-                        Sebastian
+                        {user?.name}
                       </h5>
+                      {/* {user?.subscription?.plan === PLAN_TYPE.PRO && <Badge />} */}
                     </div>
                   </Link>
                   <div className="w-full block ">
-                    <Link href="">
+                    <Link href={`/${user?.username}`}>
                       <p className="!text-[#959fa8] text-sm block truncate font-medium ">
-                        @sebastian
+                        @{user?.username}
                       </p>
                     </Link>
                   </div>
