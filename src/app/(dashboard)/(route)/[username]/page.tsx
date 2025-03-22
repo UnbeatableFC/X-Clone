@@ -4,6 +4,8 @@ import Spinner from "@/components/spinner";
 import useUser from "@/hooks/useUser";
 import React, { Fragment } from "react";
 import Header from "../../_components/_common/Header";
+import UserHero from "../../_components/_common/UserHero";
+import UserBio from "../../_components/_common/UserBio";
 interface PropsType {
   params: {
     username: string;
@@ -26,8 +28,8 @@ const SingleUser = (prop: PropsType) => {
   return (
     <Fragment>
       <Header label={fetchedUser?.name || ""} showBackArrow />
-      {/* <UserHero user={fetchedUser} />
-    <UserBio user={fetchedUser} /> */}
+      <UserHero user={fetchedUser} />
+      <UserBio user={fetchedUser} />
     </Fragment>
   );
 };

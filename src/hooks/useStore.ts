@@ -1,5 +1,7 @@
 import { create, StateCreator } from "zustand";
 
+// BIRTHDAY MODAL
+
 type BirthDaySlice = {
   isBirthDayModalOpen: boolean;
   onOpenBirthDayModal: () => void;
@@ -16,6 +18,8 @@ const createBirthDaySlice: StateCreator<
   onOpenBirthDayModal: () => set({ isBirthDayModalOpen: true }),
   onCloseBirthDayModal: () => set({ isBirthDayModalOpen: false }),
 });
+
+// EDIT MODAL
 
 type EditModalSlice = {
   isEditModalOpen: boolean;
