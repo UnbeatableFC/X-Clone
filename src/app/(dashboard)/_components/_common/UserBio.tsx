@@ -4,14 +4,18 @@ import React, { useMemo } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { CalendarCheck } from "lucide-react";
+import { useStore } from "@/hooks/useStore";
 
 interface PropType {
   user: UserType;
 }
 
 const UserBio: React.FC<PropType> = ({ user }) => {
+  const { onOpenEditModal } = useStore();
   const { data } = useCurrentUserContext();
   const currentUser = data?.currentUser ?? ({} as UserType);
+
+  
 
   const createdAt = useMemo(() => {
     if (!user?.createdAt) return null;
@@ -26,6 +30,7 @@ const UserBio: React.FC<PropType> = ({ user }) => {
           <Button
             variant="outline"
             className="border-[rgb(83,100,113)]"
+            onClick={onOpenEditModal}
           >
             Edit Profile
           </Button>

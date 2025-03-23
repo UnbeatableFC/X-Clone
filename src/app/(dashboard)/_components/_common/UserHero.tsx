@@ -22,7 +22,7 @@ const UserHero: React.FC<PropType> = ({ user }) => {
       )}
       <div className="absolute -bottom-16 left-4">
         <div className="bg-neutral-800 !w-[141px] !h-[141px] rounded-full p-[2px] border-2">
-          <Avatar className="transition w-full h-full hover:opacity-90">
+          <Avatar className="!w-full !h-full hover:opacity-90">
             <AvatarImage
               src={user?.profileImage || ""}
               alt={user?.name || ""}
