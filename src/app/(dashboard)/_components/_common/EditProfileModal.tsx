@@ -84,6 +84,8 @@ const EditProfileModal = () => {
         description: "Updated profile successfully",
         variant: "default",
       });
+
+      onCloseEditModal();
     } catch (error) {
       toast({
         title: "Error",

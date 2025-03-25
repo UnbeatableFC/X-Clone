@@ -15,8 +15,6 @@ const UserBio: React.FC<PropType> = ({ user }) => {
   const { data } = useCurrentUserContext();
   const currentUser = data?.currentUser ?? ({} as UserType);
 
-  
-
   const createdAt = useMemo(() => {
     if (!user?.createdAt) return null;
     else {
@@ -54,14 +52,19 @@ const UserBio: React.FC<PropType> = ({ user }) => {
         </div>
         <div className="flex items-center mt-3 gap-6 ">
           <div className="flex items-center gap-1">
-            <p className="text-[rgb(113,118,123)]">{user?.followingIds?.length}</p>
+            <p className="text-[rgb(113,118,123)]">
+              {user?.followingIds?.length}
+            </p>
             <p className="text-[rgb(113,118,123)]">Following</p>
           </div>
           <div className="flex items-center gap-1">
-            <p className="text-[rgb(113,118,123)]">{user?.followersCount}</p>
+            <p className="text-[rgb(113,118,123)]">
+              {user?.followersCount}
+            </p>
             <p className="text-[rgb(113,118,123)]">Followers</p>
           </div>
         </div>
+        {/* <div>{user?.bio}</div> */}
       </div>
     </div>
   );
